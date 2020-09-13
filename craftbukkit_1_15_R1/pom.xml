@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>humblelibrary-parent</artifactId>
+        <groupId>me.pustinek</groupId>
+        <version>${revision}</version>
+    </parent>
+
+    <version>1.0</version>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>humblelibrary-craftbukkit_1_15_R1</artifactId>
+    <repositories>
+        <repository>
+            <id>localrepo</id>
+            <url>file://${project.basedir}/lib</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.bukkit</groupId>
+            <artifactId>craftbukkit</artifactId>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>system</scope>
+
+            <systemPath>${pom.basedir}/../lib/craftbukkit-1.15.2-R0.1-SNAPSHOT.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>me.pustinek</groupId>
+            <artifactId>humblelibrary-nms-interfaces</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
+
+</project>

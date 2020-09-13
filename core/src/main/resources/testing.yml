@@ -1,0 +1,2 @@
+test:
+  - "{con:mode.buy || mode.buy-sell} buy-price: 30"
