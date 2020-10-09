@@ -79,9 +79,8 @@ public class Utils {
         }
     }
 
-
     /**
-     * Return itemStack from config, in case of missing values
+     * Return itemBuilder from config, in case of missing values
      * use the defaults provided
      *
      * @param itemCS           ConfigurationSection of the item
@@ -89,8 +88,7 @@ public class Utils {
      * @param defaultName      Default name of the item
      * @param loreReplacements Lore to replace in item
      */
-    public static ItemStack itemFromConfig(ConfigurationSection itemCS, Material defaultMaterial, String defaultName, HashMap<String, String> loreReplacements) {
-
+    public static ItemBuilder itemBuilderFromConfig(ConfigurationSection itemCS, Material defaultMaterial, String defaultName, HashMap<String, String> loreReplacements){
         String name = itemCS.getString("name", defaultName);
         String materialName = itemCS.getString("material");
         List<String> lore = itemCS.getStringList("lore");
@@ -149,7 +147,22 @@ public class Utils {
         if (loreReplacements != null)
             ib.setLoreReplacements(loreReplacements);
 
-        return ib.addFlags(itemFlags).build();
+        return ib.addFlags(itemFlags);
+    }
+
+
+
+    /**
+     * Return itemStack from config, in case of missing values
+     * use the defaults provided
+     *
+     * @param itemCS           ConfigurationSection of the item
+     * @param defaultMaterial  Default material of the item
+     * @param defaultName      Default name of the item
+     * @param loreReplacements Lore to replace in item
+     */
+    public static ItemStack itemFromConfig(ConfigurationSection itemCS, Material defaultMaterial, String defaultName, HashMap<String, String> loreReplacements) {
+        return itemBuilderFromConfig(itemCS, defaultMaterial, defaultName, loreReplacements).build();
     }
 
     /**
