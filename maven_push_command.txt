@@ -1,0 +1,1 @@
+package_cloud push pustinek/humblelibrary/java/maven2 ./target/humblelibrary-1.2.2.jar --coordinates=me.pustinek:humblelibrary:1.2.2
