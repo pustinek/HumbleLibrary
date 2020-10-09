@@ -1,6 +1,7 @@
 package me.pustinek.humblelibrary.utils;
 
 import com.udojava.evalex.Expression;
+import lombok.Getter;
 import me.pustinek.humblelibrary.HumbleLibrary;
 import me.pustinek.humblelibrary.nms.interfaces.NMS;
 import org.bukkit.Material;
@@ -15,6 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @SuppressWarnings(value = {"unused", "UnusedReturnValue"})
+@Getter
 public class ItemBuilder implements Cloneable {
     private static final Pattern conditionPattern = Pattern.compile("\\{(con:)(.*)}");
     private final List<EnchantmentSetting> enchantments = new ArrayList<>();
@@ -75,6 +77,11 @@ public class ItemBuilder implements Cloneable {
 
     public ItemBuilder addLore(String... lore) {
         this.lore.addAll(Arrays.asList(lore));
+        return this;
+    }
+
+    public ItemBuilder setLore(List<String> lore) {
+        this.lore = lore;
         return this;
     }
 
