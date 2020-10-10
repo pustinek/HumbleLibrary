@@ -103,6 +103,11 @@ public class Utils {
         }
 
         ItemBuilder ib = new ItemBuilder(material, name).addLore(lore);
+
+        // Set skull
+        if(itemCS.getString("skull") != null)
+            ib.setSkull(itemCS.getString("skull"));
+
         // Add enchantments
         for (String enchant : enchants) {
 
