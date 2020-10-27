@@ -241,7 +241,14 @@ public class ItemBuilder implements Cloneable {
 
     @Override
     public ItemBuilder clone() {
-        return new ItemBuilder(material, name).addLore(lore).setLoreReplacements(loreReplacements).setLoreConditions(loreConditions).setAmount(amount);
+        return new ItemBuilder(material, name)
+                .addLore(lore)
+                .setLoreReplacements(loreReplacements)
+                .setLoreConditions(loreConditions)
+                .setAmount(amount)
+                .setSkull(skullBase64)
+                .setCustomModelData(customModelData)
+                ;
     }
 
     protected static class EnchantmentSetting {
