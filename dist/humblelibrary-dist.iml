@@ -19,6 +19,15 @@
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:16.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.udojava:EvalEx:2.5" level="project" />
     <orderEntry type="module" module-name="humblelibrary-nms-interfaces" />
+    <orderEntry type="module-library">
+      <library name="Maven: local.spigot.nms:AllSpigotNMS:LATEST">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../all-spigot-nms/all-spigot-nms.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="module" module-name="humblelibrary-craftbukkit_1_15_R1" />
     <orderEntry type="module-library">
       <library name="Maven: org.bukkit:craftbukkit:1.15.2-R0.1-SNAPSHOT">

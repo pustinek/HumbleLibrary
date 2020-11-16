@@ -30,6 +30,15 @@
       </library>
     </orderEntry>
     <orderEntry type="module" module-name="humblelibrary-nms-interfaces" />
+    <orderEntry type="module-library">
+      <library name="Maven: local.spigot.nms:AllSpigotNMS:LATEST">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../all-spigot-nms/all-spigot-nms.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" name="Maven: org.jetbrains:annotations:17.0.0" level="project" />
   </component>
 </module>

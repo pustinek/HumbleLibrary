@@ -30,8 +30,16 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <!--all nms versions-->
+        <dependency>
+            <groupId>local.spigot.nms</groupId>
+            <artifactId>AllSpigotNMS</artifactId>
+            <version>LATEST</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../../../../all-spigot-nms/all-spigot-nms.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
@@ -39,6 +47,7 @@
             <version>17.0.0</version>
             <scope>compile</scope>
         </dependency>
+
     </dependencies>
 
 </project>

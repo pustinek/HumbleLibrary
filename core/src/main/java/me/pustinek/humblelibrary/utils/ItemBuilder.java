@@ -1,5 +1,7 @@
 package me.pustinek.humblelibrary.utils;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import com.udojava.evalex.Expression;
 import lombok.Getter;
 import me.pustinek.humblelibrary.HumbleLibrary;
@@ -9,7 +11,11 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.persistence.PersistentDataHolder;
+import org.jetbrains.annotations.NotNull;
 
+import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -27,7 +33,11 @@ public class ItemBuilder implements Cloneable {
     private List<String> lore = new ArrayList<>();
     private int amount = 1;
 
+    private ItemMeta clonedItemMeta = null;
+
     private Integer customModelData = null;
+
+    PersistentDataHolder persistentDataHolder;
 
     private HashMap<String, String> loreReplacements = new HashMap<>();
     private HashMap<String, String> loreConditions = new HashMap<>();
@@ -43,19 +53,28 @@ public class ItemBuilder implements Cloneable {
     }
 
     public ItemBuilder(ItemStack itemStack) {
+
         ItemStack is = itemStack.clone();
         this.material = is.getType();
         this.amount = is.getAmount();
+
         if (is.hasItemMeta()) {
             ItemMeta meta = is.getItemMeta();
             if (meta != null) {
+                this.clonedItemMeta = meta;
                 this.name = meta.getDisplayName();
+                this.customModelData = meta.hasCustomModelData() ? meta.getCustomModelData() : -1;
                 meta.getEnchants().forEach((enc, lvl) -> {
                             EnchantmentSetting es = new EnchantmentSetting(enc, lvl, true);
                             enchantments.add(es);
                         }
                 );
+
                 flags.addAll(meta.getItemFlags());
+
+                //LOAD skull:
+
+
             }
         }
     }
@@ -198,7 +217,7 @@ public class ItemBuilder implements Cloneable {
         if (amount > 64) amount = 64;
         ItemStack item = new ItemStack(material, amount);
 
-        ItemMeta itemMeta = item.getItemMeta();
+        ItemMeta itemMeta = clonedItemMeta != null ? clonedItemMeta : item.getItemMeta();
 
         if (itemMeta == null) return item;
 
@@ -227,9 +246,7 @@ public class ItemBuilder implements Cloneable {
         }
 
         if (this.skullBase64 != null && !this.skullBase64.isEmpty() && material == Material.PLAYER_HEAD) {
-            NMS nmsHandler = HumbleLibrary.getNmsHandler();
-            if(nmsHandler != null)
-             nmsHandler.setItemSkull(itemMeta, skullBase64);
+            setItemSkull(itemMeta, skullBase64);
         }
 
         if(customModelData != null)
@@ -239,16 +256,41 @@ public class ItemBuilder implements Cloneable {
         return item;
     }
 
+
+
+    private void setItemSkull(@NotNull ItemMeta itemMeta, @NotNull String base64) {
+
+        SkullMeta headMeta = (SkullMeta) itemMeta;
+
+        UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
+
+        GameProfile profile = new GameProfile(hashAsId, null);
+        profile.getProperties().put("textures", new Property("textures", base64));
+        Field profileField;
+        try {
+            profileField = headMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(headMeta, profile);
+        } catch (NoSuchFieldException | IllegalArgumentException | IllegalAccessException e1) {
+            e1.printStackTrace();
+        }
+    }
+
+
+
     @Override
     public ItemBuilder clone() {
-        return new ItemBuilder(material, name)
+
+        ItemBuilder itemBuilder = new ItemBuilder(material, name)
                 .addLore(lore)
                 .setLoreReplacements(loreReplacements)
                 .setLoreConditions(loreConditions)
                 .setAmount(amount)
-                .setSkull(skullBase64)
-                .setCustomModelData(customModelData)
-                ;
+                .setSkull(skullBase64);
+
+        if(customModelData != null) itemBuilder.setCustomModelData(customModelData);
+
+        return itemBuilder;
     }
 
     protected static class EnchantmentSetting {

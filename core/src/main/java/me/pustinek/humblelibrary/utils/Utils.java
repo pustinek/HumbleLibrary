@@ -198,7 +198,13 @@ public class Utils {
 
     }
 
-
+    /**
+     * Replace inside of a string
+     * @param replacements replacements
+     * @param text text to replace in
+     *
+     * @return List of replacements
+     */
     public static List<String> replace(HashMap<String, String> replacements, String... text) {
         ArrayList<String> finalStringList = new ArrayList<>();
         for (String str : text) {
@@ -220,6 +226,13 @@ public class Utils {
         return text;
     }
 
+    /**
+     * Put integerst together into a singe string
+     *
+     * @param digits digits to add together
+     *
+     * @return concatenated string
+     * */
     public static String concatenateDigits(int... digits) {
         StringBuilder sb = new StringBuilder(digits.length);
         for (int digit : digits) {
@@ -227,6 +240,19 @@ public class Utils {
         }
         return sb.toString();
     }
+    /**
+     * Add and increment value inside of a map
+     *
+     * @param map map to increment
+     * @param key key of the map to use
+     * @param amount amount to increment by
+     *
+     * */
+    public static<K> void increment(Map<K, Integer> map, K key, int amount) {
+        map.putIfAbsent(key, 0);
+        map.put(key, map.get(key) + amount);
+    }
+
 
 
 

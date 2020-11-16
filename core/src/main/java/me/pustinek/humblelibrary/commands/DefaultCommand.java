@@ -24,9 +24,11 @@ public abstract class DefaultCommand {
 
 
     /**
-     * Get the argument that comes after the base command that this command reacts to.
+     * Get the permission required to execute the command, settings to null
+     * will disable the permission required
      *
-     * @return The string that should be in front of the command for this class to act
+     *
+     * @return permission name that is required
      */
     public abstract String getPermission();
 
@@ -37,6 +39,7 @@ public abstract class DefaultCommand {
      * @return The string that should be in front of the command for this class to act
      */
     public abstract String getCommandStart();
+
 
     /**
      * Returns the correct help string key to be used on the help page.

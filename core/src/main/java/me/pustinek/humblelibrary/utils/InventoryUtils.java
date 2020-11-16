@@ -169,7 +169,7 @@ public class InventoryUtils {
      *
      * @return amount of available space for specified item
      */
-    public static int checkFreeSpace(Inventory inventory, ItemStack itemStack) {
+    public static int checkFreeSpace(Inventory inventory,@NotNull ItemStack itemStack) {
         int freeSpace = 0;
         int maxStackSize = itemStack.getMaxStackSize();
 

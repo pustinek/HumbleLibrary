@@ -167,7 +167,7 @@ public class HumbleCommandManager implements CommandExecutor, TabCompleter {
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> results = new ArrayList<>();
 
-        String toCompletePrefix = args[args.length - 1].toLowerCase();
+        String toCompletePrefix = args.length > 0 ? args[args.length - 1].toLowerCase() : "";
 
         for (DefaultCommand c : commands) {
             if (!c.getCommandStart().substring(0, c.getCommandStart().indexOf(" ")).equalsIgnoreCase(command.getName())) {
