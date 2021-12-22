@@ -27,7 +27,7 @@ public class HumbleCommandManager implements CommandExecutor, TabCompleter {
      *
      * @param plugin                     main plugin
      * @param helpMessageSendingConsumer consumer that will send-help messages to users on command
-     * @param commandPrefixes            commands to register (need to be registered in plugin.yml)
+     * @param commandPrefixes            me.pustinek.humblelibrary.common.utils.commands to register (need to be registered in plugin.yml)
      */
     public HumbleCommandManager(JavaPlugin plugin, Consumer<CommandConsumer> helpMessageSendingConsumer, String... commandPrefixes) throws CommandNotRegisteredException {
         this.plugin = plugin;
@@ -47,9 +47,9 @@ public class HumbleCommandManager implements CommandExecutor, TabCompleter {
     }
 
     /**
-     * Register commands that will be used to handle tab-completing/executing
+     * Register me.pustinek.humblelibrary.common.utils.commands that will be used to handle tab-completing/executing
      *
-     * @param commands Array of commands to register
+     * @param commands Array of me.pustinek.humblelibrary.common.utils.commands to register
      */
     public HumbleCommandManager addCommands(DefaultCommand... commands) {
         this.commands.addAll(Arrays.asList(commands));
