@@ -3,13 +3,18 @@ package me.pustinek.humblelibrary.utils;
 import com.udojava.evalex.Expression;
 import lombok.Getter;
 import me.pustinek.humblelibrary.HumbleLibrary;
+import me.pustinek.humblelibrary.config.ItemConfigSettings;
+import me.pustinek.humblelibrary.exceptions.ItemConfigurationException;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -204,6 +209,83 @@ public class ItemBuilder implements Cloneable {
         }
 
         return actualList;
+    }
+
+
+    public static ItemBuilder fromConfig(@NotNull ConfigurationSection cs) throws ItemConfigurationException {
+        return fromConfig(cs, new ItemConfigSettings(), null);
+    }
+    public static ItemBuilder fromConfig(@NotNull ConfigurationSection cs, ItemConfigSettings settings) throws ItemConfigurationException {
+        return fromConfig(cs, settings, null);
+    }
+    public static ItemBuilder fromConfig(@NotNull ConfigurationSection cs,ItemConfigSettings settings, @Nullable HashMap<String, String> loreReplacements) throws ItemConfigurationException {
+        String name = cs.getString(settings.getNameKey(), "");
+        String materialName = cs.getString(settings.getMaterialKey());
+        List<String> lore = cs.getStringList(settings.getLoreKey());
+        List<String> enchants = cs.getStringList(settings.getEnchantmentsKey());
+        List<String> flags = cs.getStringList(settings.getFlagsKey());
+        int customModel = cs.getInt(settings.getCustomModelDataKey(), -1);
+        Material material = null;
+        if (materialName != null && Material.getMaterial(materialName) != null) {
+            material = Material.getMaterial(materialName);
+        }
+
+
+        if(material == null)
+            throw new ItemConfigurationException("Material " + materialName + " doesn't exist !");
+
+
+        ItemBuilder ib = new ItemBuilder(material, name).addLore(lore);
+
+        // Set skull
+        if(cs.getString(settings.getSkullKey()) != null)
+            ib.setSkull(cs.getString(settings.getSkullKey()));
+
+        // Add enchantments
+        for (String enchant : enchants) {
+
+            String enchantmentName;
+            int level;
+
+            if (enchant.contains(":")) {
+                String[] split = enchant.split(":");
+
+                if (split.length < 2) continue;
+
+                enchantmentName = split[0];
+                level = Utils.parseIntOrDefault(split[1], 1);
+            } else {
+                enchantmentName = enchant;
+                level = 1;
+            }
+            try {
+                Enchantment enchantment = Enchantment.getByKey(NamespacedKey.minecraft(enchantmentName.toLowerCase()));
+                ib.applyEnchantment(enchantment, level, true);
+            } catch (IllegalArgumentException ignore) {
+            }
+
+
+        }
+
+        // Add flags:
+        List<ItemFlag> itemFlags = new ArrayList<>();
+        for (String flagString : flags) {
+            try {
+                ItemFlag itemFlag = ItemFlag.valueOf(flagString);
+                itemFlags.add(itemFlag);
+            } catch (IllegalArgumentException ignore) {
+            }
+
+        }
+        // Set custom model:
+        if(customModel > -1)
+            ib.setCustomModelData(customModel);
+
+
+        if (loreReplacements != null)
+            ib.setLoreReplacements(loreReplacements);
+
+        return ib.addFlags(itemFlags);
     }
 
 

@@ -8,7 +8,25 @@ plugins {
 }
 
 group = 'me.pustinek'
-version = '2.0'
+version = '2.1.1'
+
+publishing {
+    repositories {
+        maven {
+            name = "github"
+            url = uri("https://maven.pkg.github.com/pustinek/humblelibrary")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
 
 repositories {
     mavenCentral()
@@ -28,5 +46,5 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
-description = 'humblelibrary-core'
+description = 'humblelibrary'
 
