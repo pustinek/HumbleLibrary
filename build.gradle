@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'me.pustinek'
-version = '2.3.3'
+version = '2.3.4'
 
 repositories {
     mavenCentral()
@@ -35,11 +35,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
