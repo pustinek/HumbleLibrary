@@ -18,7 +18,7 @@ public class ChatUtils {
      */
     public static String parseHexColor(String hexColor) throws NumberFormatException {
 
-        if (VersionUtil.getServerBukkitVersion().isLowerThan(VersionUtil.v1_16_1_R01)) {
+        if (VersionUtilOld.getServerBukkitVersion().isLowerThan(VersionUtilOld.v1_16_1_R01)) {
             throw new NumberFormatException("Cannot use RGB colors in versions < 1.16");
         }
 

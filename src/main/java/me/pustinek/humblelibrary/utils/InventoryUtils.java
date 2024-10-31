@@ -1,8 +1,7 @@
 package me.pustinek.humblelibrary.utils;
 
 import me.pustinek.humblelibrary.exceptions.ItemSlotParseException;
-import me.pustinek.humblelibrary.inventory.ItemStackProperty;
-import org.bukkit.ChatColor;
+import me.pustinek.humblelibrary.item.ItemStackProperty;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -11,11 +10,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 public class InventoryUtils {
 

@@ -17,7 +17,7 @@ public class ItemConfigSettings {
     String materialKey = "material";
     String nameKey = "name";
     String loreKey = "lore";
-    String customModelDataKey = "custom_model";
+    String customModelDataKey = "custom_model_data";
     String flagsKey = "flags";
     String enchantmentsKey = "enchantments";
     String skullKey = "skull";

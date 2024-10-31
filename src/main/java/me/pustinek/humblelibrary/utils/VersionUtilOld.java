@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * https://github.com/EssentialsX/Essentials/blob/76e511a774bbb013b28bee9ad715e02ff762fb71/Essentials/src/com/earth2me/essentials/utils/VersionUtil.java
  */
 
-public class VersionUtil {
+public class VersionUtilOld {
 
     public static final BukkitVersion v1_8_8_R01 = BukkitVersion.fromString("1.8.8-R0.1-SNAPSHOT");
     public static final BukkitVersion v1_9_R01 = BukkitVersion.fromString("1.9-R0.1-SNAPSHOT");
@@ -36,6 +36,20 @@ public class VersionUtil {
     public static final BukkitVersion v1_16_2_R01 = BukkitVersion.fromString("1.16.2-R0.1-SNAPSHOT");
     public static final BukkitVersion v1_16_3_R01 = BukkitVersion.fromString("1.16.3-R0.1-SNAPSHOT");
     public static final BukkitVersion v1_16_4_R01 = BukkitVersion.fromString("1.16.4-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_17_R01 = BukkitVersion.fromString("1.17-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_17_1_R01 = BukkitVersion.fromString("1.17.1-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_18_R01 = BukkitVersion.fromString("1.18-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_18_1_R01 = BukkitVersion.fromString("1.18.1-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_18_2_R01 = BukkitVersion.fromString("1.18.2-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_19_R01 = BukkitVersion.fromString("1.19-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_19_1_R01 = BukkitVersion.fromString("1.19.1-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_19_2_R01 = BukkitVersion.fromString("1.19.2-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_19_3_R01 = BukkitVersion.fromString("1.19.3-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_20_R01 = BukkitVersion.fromString("1.20-R0.1-SNAPSHOT");
+    public static final BukkitVersion v1_20_1_R01 = BukkitVersion.fromString("1.20.1-R0.1-SNAPSHOT");
+
+
+
 
     private static final Set<BukkitVersion> supportedVersions = ImmutableSet.of(v1_8_8_R01, v1_9_4_R01, v1_10_2_R01, v1_11_2_R01, v1_12_2_R01, v1_13_2_R01, v1_14_4_R01, v1_15_2_R01, v1_16_1_R01);
 

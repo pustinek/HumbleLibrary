@@ -8,25 +8,7 @@ plugins {
 }
 
 group = 'me.pustinek'
-version = '2.1.1'
-
-publishing {
-    repositories {
-        maven {
-            name = "github"
-            url = uri("https://maven.pkg.github.com/pustinek/humblelibrary")
-            credentials {
-                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
-            }
-        }
-    }
-    publications {
-        gpr(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
+version = '2.3.0'
 
 repositories {
     mavenCentral()
@@ -34,16 +16,51 @@ repositories {
     maven { url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
     // Because Spigot depends on Bungeecord ChatComponent-API
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+
+    // Used for SkullCreator
+    maven {
+        name = 'minecraft-repo'
+        url = 'https://libraries.minecraft.net/'
+    }
 }
 
+
+
+
 dependencies {
+
+
+    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.21.1-R0.1-SNAPSHOT'
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+
+    // used for SkullCreator
+    compileOnly 'com.mojang:authlib:1.5.21'
+
     implementation 'org.jetbrains:annotations:23.0.0'
     implementation 'com.udojava:EvalEx:2.7'
-    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-    compileOnly group: 'org.spigotmc', name: 'spigot-api', version: '1.18-R0.1-SNAPSHOT'
-    compileOnly 'org.projectlombok:lombok:1.18.24'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.0'
+
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java // This will include the JAR and generate a POM
+            groupId = group
+            artifactId = 'HumbleLibrary'
+            version = version
+        }
+    }
+    repositories {
+        mavenLocal() // Publish to the local Maven repository (~/.m2/repository)
+    }
+}
+
+
+test {
+    useJUnitPlatform()
 }
 
 description = 'humblelibrary'

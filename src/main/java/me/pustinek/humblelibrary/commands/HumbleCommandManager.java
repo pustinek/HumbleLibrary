@@ -170,13 +170,17 @@ public class HumbleCommandManager implements CommandExecutor, TabCompleter {
         String toCompletePrefix = args.length > 0 ? args[args.length - 1].toLowerCase() : "";
 
         for (DefaultCommand c : commands) {
-            if (!c.getCommandStart().substring(0, c.getCommandStart().indexOf(" ")).equalsIgnoreCase(command.getName())) {
+            if (!c.getCommandStart().toLowerCase().startsWith(command.getName().toLowerCase())) {
                 continue;
             }
 
             if (!c.hasPermission(sender)) continue;
 
-            if (args.length == 1) {
+
+
+
+
+            if (args.length == 1 && c.getCommandStart().split(" ").length > 1) {
                 // Show the first part of the command start
                 // example: /examplePlugin [give,get,reload]
                 String begin = c.getCommandStart();
@@ -187,6 +191,10 @@ public class HumbleCommandManager implements CommandExecutor, TabCompleter {
                     if (split[args.length].contains(args[args.length - 1]) && split[args.length - 1].equalsIgnoreCase(args[args.length - 2]))
                         results.add(split[args.length]);
                 } else {
+
+
+
+
 
                     int shortenedArgsSize = args.length - split.length;
 

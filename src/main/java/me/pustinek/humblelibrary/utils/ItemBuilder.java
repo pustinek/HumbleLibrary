@@ -2,9 +2,9 @@ package me.pustinek.humblelibrary.utils;
 
 import com.udojava.evalex.Expression;
 import lombok.Getter;
-import me.pustinek.humblelibrary.HumbleLibrary;
 import me.pustinek.humblelibrary.config.ItemConfigSettings;
 import me.pustinek.humblelibrary.exceptions.ItemConfigurationException;
+import me.pustinek.humblelibrary.item.SkullCreator;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,6 +12,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.persistence.PersistentDataHolder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,6 +32,7 @@ public class ItemBuilder implements Cloneable {
     private Material material;
     private String skullBase64;
     private List<String> lore = new ArrayList<>();
+    private boolean wasSetLoreUsed = false;
     private int amount = 1;
 
     private ItemMeta clonedItemMeta = null;
@@ -39,7 +41,7 @@ public class ItemBuilder implements Cloneable {
 
     PersistentDataHolder persistentDataHolder;
 
-    private HashMap<String, String> loreReplacements = new HashMap<>();
+    private HashMap<String, String> replacements = new HashMap<>();
     private HashMap<String, String> loreConditions = new HashMap<>();
 
 
@@ -101,6 +103,7 @@ public class ItemBuilder implements Cloneable {
 
     public ItemBuilder setLore(List<String> lore) {
         this.lore = lore;
+        this.wasSetLoreUsed = true;
         return this;
     }
 
@@ -146,8 +149,8 @@ public class ItemBuilder implements Cloneable {
         return this;
     }
 
-    public ItemBuilder setLoreReplacements(HashMap<String, String> replacements) {
-        this.loreReplacements = replacements;
+    public ItemBuilder setReplacements(HashMap<String, String> replacements) {
+        this.replacements = replacements;
         return this;
     }
 
@@ -165,12 +168,19 @@ public class ItemBuilder implements Cloneable {
     private void replaceLore() {
         ArrayList<String> finalStringList = new ArrayList<>();
         for (String str : lore) {
-            for (String key : loreReplacements.keySet()) {
-                str = str.replace(key, loreReplacements.get(key));
+            for (String key : replacements.keySet()) {
+                str = str.replace(key, replacements.get(key));
             }
             finalStringList.add(str);
         }
         lore = finalStringList;
+    }
+
+
+    private void replaceName() {
+        for (String key : replacements.keySet()) {
+            name = name.replace(key, replacements.get(key));
+        }
     }
 
 
@@ -218,7 +228,7 @@ public class ItemBuilder implements Cloneable {
     public static ItemBuilder fromConfig(@NotNull ConfigurationSection cs, ItemConfigSettings settings) throws ItemConfigurationException {
         return fromConfig(cs, settings, null);
     }
-    public static ItemBuilder fromConfig(@NotNull ConfigurationSection cs,ItemConfigSettings settings, @Nullable HashMap<String, String> loreReplacements) throws ItemConfigurationException {
+    public static ItemBuilder fromConfig(@NotNull ConfigurationSection cs,ItemConfigSettings settings, @Nullable HashMap<String, String> replacements) throws ItemConfigurationException {
         String name = cs.getString(settings.getNameKey(), "");
         String materialName = cs.getString(settings.getMaterialKey());
         List<String> lore = cs.getStringList(settings.getLoreKey());
@@ -282,8 +292,8 @@ public class ItemBuilder implements Cloneable {
             ib.setCustomModelData(customModel);
 
 
-        if (loreReplacements != null)
-            ib.setLoreReplacements(loreReplacements);
+        if (replacements != null)
+            ib.setReplacements(replacements);
 
         return ib.addFlags(itemFlags);
     }
@@ -298,8 +308,12 @@ public class ItemBuilder implements Cloneable {
 
         if (itemMeta == null) return item;
 
-        if (name != null)
+
+
+        if (name != null){
+            replaceName();
             itemMeta.setDisplayName(ChatUtils.chatColor(name));
+        }
 
         replaceLore();
 
@@ -307,11 +321,13 @@ public class ItemBuilder implements Cloneable {
             this.lore = conditionalLoreParsing(lore, loreConditions);
         }
 
+        List<String> clonedLore =  (itemMeta.hasLore() && itemMeta.getLore() != null) ? itemMeta.getLore() : new ArrayList<>();
 
-        if (!lore.isEmpty()) {
-            List<String> lore = (itemMeta.hasLore() && itemMeta.getLore() != null) ? itemMeta.getLore() : new ArrayList<>();
-            lore.addAll(this.lore);
+        if(wasSetLoreUsed){
             itemMeta.setLore(ChatUtils.chatColor(lore));
+        }else{
+           clonedLore.addAll(ChatUtils.chatColor(lore));
+           itemMeta.setLore(clonedLore);
         }
 
         for (EnchantmentSetting enchantment : enchantments) {
@@ -335,8 +351,13 @@ public class ItemBuilder implements Cloneable {
 
 
 
+
     private void setItemSkull(@NotNull ItemMeta itemMeta, @NotNull String base64) {
-        //TODO: set item meta using Bukkit.getUnsafe()
+
+        if(!(itemMeta instanceof SkullMeta skullMeta))
+            return;
+
+        SkullCreator.mutateItemMeta(skullMeta, base64);
     }
 
 
@@ -346,7 +367,7 @@ public class ItemBuilder implements Cloneable {
 
         ItemBuilder itemBuilder = new ItemBuilder(material, name)
                 .addLore(lore)
-                .setLoreReplacements(loreReplacements)
+                .setReplacements(replacements)
                 .setLoreConditions(loreConditions)
                 .setAmount(amount)
                 .setSkull(skullBase64);
