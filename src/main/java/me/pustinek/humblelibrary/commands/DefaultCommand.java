@@ -1,7 +1,6 @@
 package me.pustinek.humblelibrary.commands;
 
 import lombok.Getter;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -63,7 +62,7 @@ public abstract class DefaultCommand {
      * @return true if it can execute the command, false otherwise
      */
     public boolean canExecute(Command command, String[] args) {
-        String commandString = command.getName() + " " + StringUtils.join(args, " ");
+        String commandString = command.getName() + " " + String.join(" ", args);
         if (commandString.length() > getCommandStart().length()) {
             return commandString.toLowerCase().startsWith(getCommandStart().toLowerCase() + " ");
         }

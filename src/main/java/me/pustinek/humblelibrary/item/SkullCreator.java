@@ -294,10 +294,10 @@ public class SkullCreator {
         try {
             if (VersionUtilOld.getServerBukkitVersion().isHigherThanOrEqualTo(VersionUtilOld.v1_19_1_R01)) {
 
-                UUID uuid = UUID.nameUUIDFromBytes(b64.getBytes(StandardCharsets.UTF_8));
+                final UUID uuid = UUID.randomUUID();
 
                 // Use PlayerProfile in newer versions (1.19+)
-                PlayerProfile playerProfile = Bukkit.createPlayerProfile(UUID.randomUUID(), "Player");
+                PlayerProfile playerProfile = Bukkit.createPlayerProfile(uuid, uuid.toString().substring(0, 16));
 
                 // Get the PlayerTextures from the PlayerProfile
                 PlayerTextures textures = playerProfile.getTextures();

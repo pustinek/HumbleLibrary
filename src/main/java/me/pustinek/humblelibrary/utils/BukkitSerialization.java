@@ -1,6 +1,7 @@
 package me.pustinek.humblelibrary.utils;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -156,6 +157,32 @@ public class BukkitSerialization {
             throw new IOException("Unable to decode class type.", e);
         }
     }
+
+
+
+    public static ItemStack[] itemStackArrayFromBase64(String data, boolean skipCorrupted) throws IOException {
+        try {
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+            ItemStack[] items = new ItemStack[dataInput.readInt()];
+
+            for (int i = 0; i < items.length; i++) {
+                try {
+                    items[i] = (ItemStack) dataInput.readObject();
+                } catch (Exception e) {
+                    // Handle the exception gracefully, perhaps log it
+                    System.err.println("Failed to deserialize ItemStack at index " + i + ": " + e.getMessage());
+                    items[i] = new ItemStack(Material.AIR); // or some default ItemStack
+                }
+            }
+
+            dataInput.close();
+            return items;
+        } catch (IOException e) {
+            throw new IOException("Unable to decode class type.", e);
+        }
+    }
+
 
     /**
      * A method to serialize an {@link ItemStack} array to Base64 String.

@@ -1,16 +1,16 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.1.1' // Add the Shadow plugin
 }
 
 group = 'me.pustinek'
-version = '2.3.5'
+version = '2.3.7'
 
 java {
     sourceCompatibility = 17
     targetCompatibility = 17
 }
-
 
 repositories {
     mavenCentral()
@@ -31,7 +31,7 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.24'
 
     // used for SkullCreator
-    compileOnly 'com.mojang:authlib:1.5.21'
+    compileOnly 'com.mojang:authlib:3.18.38'
 
     implementation 'org.jetbrains:annotations:23.0.0'
     implementation 'com.udojava:EvalEx:2.7'
@@ -41,12 +41,18 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
-
-
-
 test {
     useJUnitPlatform()
 }
 
 description = 'humblelibrary'
 
+// Shadow JAR task configuration
+shadowJar {
+    archiveClassifier.set('') // This removes the "-all" suffix from the shadow JAR filename
+    mergeServiceFiles()        // Merges service files if there are any conflicts
+    // Optionally, you can specify dependencies or packages to include/exclude if needed
+}
+
+// Ensure the shadow JAR is created by default
+build.dependsOn shadowJar
